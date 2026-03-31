@@ -48,6 +48,7 @@ body {
   filter: blur(120px);
   opacity: 0.18;
   animation: float 20s ease-in-out infinite;
+  pointer-events: none; /* Explicit — iOS Safari doesn't always inherit from fixed parent */
 }
 .orb-1 {
   width: 600px; height: 600px;
