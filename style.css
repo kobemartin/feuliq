@@ -322,14 +322,32 @@ body {
   font-family: inherit;
   font-weight: 600;
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--ev-primary);
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
+  padding-right: 0.2rem;
 }
 .ct-unit-select option {
   background: var(--bg);
   color: var(--text-primary);
+}
+.ct-unit-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: background 0.2s;
+}
+.ct-unit-dropdown:hover {
+  background: rgba(34, 211, 238, 0.1);
+}
+.ct-chevron {
+  font-size: 0.7rem;
+  color: var(--ev-primary);
+  opacity: 0.7;
+  pointer-events: none;
 }
 
 /* Span input (for miles/year, years that span both columns) */
