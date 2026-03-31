@@ -108,12 +108,35 @@ feuliq/
 
 ## 10. Standard PR Workflow for This Repo
 
+**Always use Git Worktrees** for new features to keep the main environment clean and allow for parallel work.
+
 ```bash
-git checkout main && git pull origin main
-git checkout -b <type>/<description>   # e.g. feat/add-nissan-leaf
-# ... make changes ...
-# Capture before/after screenshots → /assets/screenshots/
+# 1. Create a new worktree for the feature from main
+git worktree add -b <type>/<description> ../feuliq-<branch-basename> main
+
+# 2. Move into the new worktree
+cd ../feuliq-<branch-basename>
+
+# 3. ... build features and capture screenshots ...
+
+# 4. Commit and Push
 git add . && git commit -m "<type>: <description>"
-git push origin <branch>
-# Open PR on GitHub (gh CLI may be broken — use web UI if needed)
+git push origin <type>/<description>
+
+# 5. Create PR (use web UI if 'gh' CLI fails)
+gh pr create
+
+# 6. Cleanup (after merge)
+cd ../feuliq && git worktree remove ../feuliq-<branch-basename>
 ```
+
+---
+
+## 11. Parallel Execution with Git Worktrees
+
+> [!IMPORTANT]
+> Since every feature now starts in its own physical directory, multiple agents can work on the same repo **simultaneously** without file/branch collisions. Never run `git checkout -b` in the main workspace for a new feature.
+
+**Benefits:** 
+- Zero branch flip-flopping.
+- Zero `app.js` overwrites across parallel sessions.
