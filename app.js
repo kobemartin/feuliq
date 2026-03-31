@@ -18,7 +18,8 @@ const GAS_PRESETS = {
 const EV_PRESETS = {
   model3: { kwh: 0.24, purchase: 38990, maintenance: 400, incentive: 7500 },
   modely: { kwh: 0.28, purchase: 44990, maintenance: 450, incentive: 7500 },
-  f150l: { kwh: 0.48, purchase: 49995, maintenance: 600, incentive: 7500 }
+  bolt:   { kwh: 0.29, purchase: 27495, maintenance: 380, incentive: 7500 },
+  f150l:  { kwh: 0.48, purchase: 49995, maintenance: 600, incentive: 7500 }
 };
 
 $('gas-preset').addEventListener('change', (e) => {
