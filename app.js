@@ -343,7 +343,7 @@ function renderBreakdownChart(gasFuel, gasMaint, evFuel, evMaint) {
   breakdownChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['⛽ Gas', '⚡ Electric'],
+      labels: [['⛽', 'Gas'], ['⚡', 'Electric']],
       datasets: [
         {
           label: 'Fuel Cost',
