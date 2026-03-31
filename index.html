@@ -1,312 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FuelIQ — Gas vs Electric Cost Calculator</title>
-  <meta name="description" content="Compare the true cost of driving a gas car vs an electric vehicle. Calculate fuel savings, break-even point, and 10-year cost projections."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Index</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
-  <!-- Background orbs -->
-  <div class="bg-orbs">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-
-  <!-- Compact Header -->
-  <header class="compact-header">
-    <div class="logo">
-      <span class="logo-icon">⚡</span>
-      <span class="logo-text">FuelIQ</span>
+    <header>
+        <h1>Welcome to My Responsive Site</h1>
+    </header>
+    <div class="container">
+        <p>This is the main content area.</p>
     </div>
-    <div class="mode-toggle">
-      <button class="mode-btn active" id="mode-fuel">Fuel Only</button>
-      <button class="mode-btn" id="mode-tco">Total Cost (TCO)</button>
-    </div>
-  </header>
-
-  <main class="main">
-
-    <!-- ===== COMPARISON TABLE ===== -->
-    <div class="comparison-card">
-      <div class="comparison-table">
-
-        <!-- Column Headers -->
-        <div class="ct-row ct-header-row">
-          <div class="ct-label"></div>
-          <div class="ct-cell ct-gas-header">
-            <span class="ct-col-icon">⛽</span>
-            <span class="ct-col-title">Gas Vehicle</span>
-          </div>
-          <div class="ct-cell ct-ev-header">
-            <span class="ct-col-icon">⚡</span>
-            <span class="ct-col-title">Electric Vehicle</span>
-          </div>
-        </div>
-
-        <!-- Vehicle Selection -->
-        <div class="ct-row">
-          <div class="ct-label">Vehicle</div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap ct-select-wrap">
-              <select id="gas-preset" class="ct-select gas-accent">
-                <option value="custom">⚙️ Custom</option>
-                <option value="camry">🚗 Toyota Camry</option>
-                <option value="rav4">🚙 Toyota RAV4</option>
-                <option value="f150">🛻 Ford F-150</option>
-              </select>
-            </div>
-          </div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap ct-select-wrap">
-              <select id="ev-preset" class="ct-select ev-accent">
-                <option value="custom">⚙️ Custom</option>
-                <option value="model3">🚗 Tesla Model 3</option>
-                <option value="modely">🚙 Tesla Model Y</option>
-                <option value="bolt">🔋 Chevy Bolt EUV</option>
-                <option value="f150l">🛻 F-150 Lightning</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Fuel Price -->
-        <div class="ct-row">
-          <div class="ct-label">Fuel Price</div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <span class="ct-prefix">$</span>
-              <input id="gas-price" type="number" class="ct-input" value="3.80" min="1" max="10" step="0.01" />
-              <span class="ct-suffix">/ gal</span>
-            </div>
-          </div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <span class="ct-prefix">$</span>
-              <input id="electricity-rate" type="number" class="ct-input" value="0.16" min="0.05" max="0.60" step="0.01" />
-              <span class="ct-suffix">/ kWh</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Efficiency -->
-        <div class="ct-row">
-          <div class="ct-label">Efficiency</div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <input id="mpg" type="number" class="ct-input" value="30" min="5" max="80" step="1" />
-              <span class="ct-suffix">MPG</span>
-            </div>
-          </div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <input id="ev-efficiency" type="number" class="ct-input" value="3.3" min="0.1" max="100" step="0.01" />
-              <span class="ct-suffix ct-unit-dropdown">
-                <select id="ev-eff-unit" class="ct-unit-select">
-                  <option value="mi/kwh">mi/kWh</option>
-                  <option value="kwh/mi">kWh/mi</option>
-                </select>
-                <span class="ct-chevron">▾</span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- TCO: Purchase Price -->
-        <div class="ct-row tco-only hide">
-          <div class="ct-label">Purchase Price</div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <span class="ct-prefix">$</span>
-              <input id="gas-purchase" type="number" class="ct-input" value="28000" min="5000" max="200000" step="500" />
-            </div>
-          </div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <span class="ct-prefix">$</span>
-              <input id="ev-purchase" type="number" class="ct-input" value="40000" min="5000" max="200000" step="500" />
-            </div>
-          </div>
-        </div>
-
-        <!-- TCO: Annual Maintenance -->
-        <div class="ct-row tco-only hide">
-          <div class="ct-label">Maintenance</div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <span class="ct-prefix">$</span>
-              <input id="gas-maintenance" type="number" class="ct-input" value="1200" min="0" max="10000" step="50" />
-              <span class="ct-suffix">/ yr</span>
-            </div>
-          </div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <span class="ct-prefix">$</span>
-              <input id="ev-maintenance" type="number" class="ct-input" value="500" min="0" max="10000" step="50" />
-              <span class="ct-suffix">/ yr</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- TCO: Tax Credit -->
-        <div class="ct-row tco-only hide">
-          <div class="ct-label">Tax Credit</div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap ct-input-disabled">
-              <span class="ct-prefix">$</span>
-              <input type="number" class="ct-input" value="0" disabled />
-            </div>
-          </div>
-          <div class="ct-cell">
-            <div class="ct-input-wrap">
-              <span class="ct-prefix">$</span>
-              <input id="ev-incentive" type="number" class="ct-input" value="7500" min="0" max="10000" step="500" />
-            </div>
-          </div>
-        </div>
-
-        <!-- TCO: Miles/Year -->
-        <div class="ct-row tco-only hide">
-          <div class="ct-label">Miles / Year</div>
-          <div class="ct-cell" colspan="2" style="grid-column: 2 / -1;">
-            <div class="ct-input-wrap ct-span-input">
-              <input id="miles-per-year" type="number" class="ct-input" value="12000" min="1000" max="100000" step="500" />
-              <span class="ct-suffix">mi/yr</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- TCO: Ownership period -->
-        <div class="ct-row tco-only hide">
-          <div class="ct-label">Ownership</div>
-          <div class="ct-cell" colspan="2" style="grid-column: 2 / -1;">
-            <div class="ct-input-wrap ct-span-input">
-              <input id="years" type="number" class="ct-input" value="5" min="1" max="15" step="1" />
-              <span class="ct-suffix">years</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ===== RESULTS DIVIDER ===== -->
-        <div class="ct-divider">
-          <span class="ct-divider-text">Results</span>
-        </div>
-
-        <!-- Result: Cost Per Mile -->
-        <div class="ct-row ct-result-row">
-          <div class="ct-label">Cost / Mile</div>
-          <div class="ct-cell ct-result-cell gas-result">
-            <span class="ct-result-value" id="cpm-gas">—</span>
-          </div>
-          <div class="ct-cell ct-result-cell ev-result">
-            <span class="ct-result-value" id="cpm-ev">—</span>
-          </div>
-        </div>
-
-        <!-- Result: Equivalent Rate -->
-        <div class="ct-row ct-result-row ct-equiv-row fuel-only">
-          <div class="ct-label">
-            Equivalent
-            <span class="ct-label-sub">to match the other</span>
-          </div>
-          <div class="ct-cell ct-result-cell ct-equiv-cell">
-            <span class="ct-equiv-value ev-text" id="equiv-electric">—</span>
-            <span class="ct-equiv-sub">electricity rate</span>
-          </div>
-          <div class="ct-cell ct-result-cell ct-equiv-cell">
-            <span class="ct-equiv-value gas-text" id="equiv-gas">—</span>
-            <span class="ct-equiv-sub">gas price</span>
-          </div>
-        </div>
-
-        <!-- TCO Results: Annual Fuel Cost -->
-        <div class="ct-row ct-result-row tco-only hide">
-          <div class="ct-label">Annual Fuel</div>
-          <div class="ct-cell ct-result-cell gas-result">
-            <span class="ct-result-value" id="annual-gas">—</span>
-          </div>
-          <div class="ct-cell ct-result-cell ev-result">
-            <span class="ct-result-value" id="annual-ev">—</span>
-          </div>
-        </div>
-
-      </div><!-- /comparison-table -->
-
-      <!-- Verdict Bar -->
-      <div class="verdict-bar" id="verdict-bar">
-        <span class="verdict-icon" id="verdict-icon">⚡</span>
-        <span class="verdict-text" id="verdict-text">Enter values to compare</span>
-      </div>
-
-    </div><!-- /comparison-card -->
-
-    <!-- TCO: Summary Cards -->
-    <div class="tco-summary tco-only hide">
-      <div class="tco-card">
-        <p class="tco-card-label">Break-Even Point</p>
-        <p class="tco-card-value purple-text" id="breakeven-display">—</p>
-        <p class="tco-card-sub" id="breakeven-sub">When EV total cost equals gas</p>
-      </div>
-      <div class="tco-card">
-        <p class="tco-card-label">Total Fuel Savings</p>
-        <p class="tco-card-value ev-text" id="fuel-savings-display">—</p>
-        <p class="tco-card-sub">Over ownership period</p>
-      </div>
-      <div class="tco-card tco-winner-card" id="winner-card">
-        <p class="tco-card-label">Winner</p>
-        <p class="tco-card-value" id="winner-title">—</p>
-        <p class="tco-card-sub" id="winner-savings">—</p>
-      </div>
-    </div>
-
-    <!-- TCO: Charts -->
-    <div class="charts-grid tco-only hide">
-      <div class="chart-card">
-        <h3 class="chart-title">Cumulative Total Cost Over Time</h3>
-        <p class="chart-sub">Including purchase price, fuel, and maintenance</p>
-        <div class="chart-wrap">
-          <canvas id="cumulative-chart"></canvas>
-        </div>
-      </div>
-      <div class="chart-card">
-        <h3 class="chart-title">Annual Cost Breakdown</h3>
-        <p class="chart-sub">Fuel vs maintenance comparison</p>
-        <div class="chart-wrap chart-wrap-bar">
-          <canvas id="breakdown-chart"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- TCO: Year-by-Year Table -->
-    <div class="table-card tco-only hide">
-      <h3 class="chart-title">Year-by-Year Summary</h3>
-      <div class="table-scroll">
-        <table id="cost-table">
-          <thead>
-            <tr>
-              <th>Year</th>
-              <th class="gas-head">⛽ Gas Cumulative</th>
-              <th class="ev-head">⚡ EV Cumulative</th>
-              <th>Difference</th>
-            </tr>
-          </thead>
-          <tbody id="table-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-  </main>
-
-  <footer class="footer">
-    <p>FuelIQ — Estimates based on inputs provided. Actual costs vary by region and driving conditions.</p>
-  </footer>
-
-  <script src="app.js"></script>
 </body>
 </html>
