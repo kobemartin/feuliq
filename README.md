@@ -78,6 +78,25 @@ No build step. No frameworks. Just open `index.html`.
 
 ---
 
+## 👩‍💻 Parallel Development (Agents & Humans)
+
+If you are running multiple development sessions (or AI agents) simultaneously on this repository, you **must** use separate workspaces to avoid file and branch clashing.
+
+### Recommended: Git Worktrees
+Use [Git Worktrees](https://git-scm.com/docs/git-worktree) to check out separate branches in separate physical folders while sharing the same `.git` database:
+
+```bash
+# Add a new workspace for a parallel task
+git worktree add ../feuliq-worker-1 feature/new-car-preset
+
+# When finished and merged
+git worktree remove ../feuliq-worker-1
+```
+
+This prevents one session from overwriting the work of another or accidentally flip-flopping the local Git state.
+
+---
+
 ## 🧮 How It Works
 
 ### Fuel-Only Mode

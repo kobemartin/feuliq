@@ -117,3 +117,26 @@ git add . && git commit -m "<type>: <description>"
 git push origin <branch>
 # Open PR on GitHub (gh CLI may be broken — use web UI if needed)
 ```
+
+---
+
+## 11. Parallel Execution with Git Worktrees
+
+> [!IMPORTANT]
+> If multiple agents are working on this repo **simultaneously**, they MUST use separate workspaces to avoid file/branch clashing.
+
+**Recommended Approach: Git Worktrees**
+Instead of cloning the repo multiple times, use a worktree to check out a new branch in a separate folder:
+```bash
+# From the main repo directory:
+git worktree add ../feuliq-worker-1 feature/my-new-task
+```
+**Benefits:** 
+- Prevents two agents from overwriting the same `app.js` or `index.html`.
+- Avoids "branch flip-flopping" where one agent's checkout ruins another's session.
+- Shares the same `.git` history/objects (saving disk space).
+
+**Cleanup:** When done and the branch is merged, remove the worktree:
+```bash
+git worktree remove ../feuliq-worker-1
+```
