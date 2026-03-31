@@ -1,5 +1,9 @@
 # ⚡ FuelIQ — Gas vs Electric Cost Calculator
 
+**[Live Demo: FuelIQ Site](https://kobemartin.github.io/feuliq/)**
+
+![FuelIQ QR Code](https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://kobemartin.github.io/feuliq/)
+
 A sleek, interactive web app that compares the true cost of driving a gas vehicle versus an electric vehicle. Built with vanilla HTML, CSS, and JavaScript.
 
 ![FuelIQ Screenshot](https://img.shields.io/badge/status-live-brightgreen) ![License](https://img.shields.io/badge/license-MIT-blue)
