@@ -2,7 +2,11 @@
 
 **[Live Demo: FuelIQ Site](https://kobemartin.github.io/feuliq/)**
 
-![FuelIQ QR Code](https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://kobemartin.github.io/feuliq/)
+<p align="center">
+  <img src="assets/qr-code.png" width="150" alt="FuelIQ QR Code">
+  <br>
+  <em>Scan to try on your phone</em>
+</p>
 
 A sleek, interactive web app that compares the true cost of driving a gas vehicle versus an electric vehicle. Built with vanilla HTML, CSS, and JavaScript.
 
