@@ -125,25 +125,21 @@ feuliq/
 
 ## 10. General Workflow for This Repo
 
-1. `git checkout -b <feature-branch>` from latest `main` (or use `git worktree` for parallel work)
-2. Make changes
-3. Capture before/after screenshots (see #6 above)
+1. **Always use Git Worktrees** for new features: `git worktree add -b <branch> ../path main`
+2. Navigate to the new folder: `cd ../path`
+3. Make changes and capture before/after screenshots
 4. `git add . && git commit -m "feat|fix|chore|docs: description"`
 5. `git push origin <feature-branch>`
-6. `gh pr create --title "..." --body "...![Before](...) ![After](...)"`
-7. Never `git push origin main` — branch protection is active
+6. `gh pr create`
+7. After merging, return to main and remove the worktree: `git worktree remove ../path`
 
 ---
 
-## 11. Workspace Clashing with Parallel Agents
+## 11. Avoiding Workspace Clashing
 
-### Issue: Multiple agents running simultaneously in the same local directory
-**Session:** Should i be using workspaces across each agent to prevent file clashign?
-**What happened:** Concurrent agents "clashed" by overwriting files (like `app.js`) or flip-flopping the Git branch state of the directory, leading to corrupt or lost work.
-**Risk:** High. If Agent A runs `git checkout` while Agent B is writing a file, the resulting state is unpredictable.
-**Resolution:** Use **Git Worktrees** to isolate parallel tasks into separate physical folders while sharing the same repo database.
-**Implementation:**
-```bash
-git worktree add ../worker-folder-name branch-name
-```
-**Lesson:** Never run two automated agents in the same physical directory at the same time. Always isolate them via worktrees or separate clones.
+### The Clashing Problem
+Concurrent agents "clashed" by overwriting files or flip-flopping the Git branch state of a single directory. The resolution was to mandate **Git Worktrees** for all feature work.
+
+**Risk:** High. Fixed by isolation.
+
+**Lesson:** Never work in the main workspace for a new feature. Always isolate parallel and sequential tasks into worktrees.

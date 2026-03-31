@@ -82,22 +82,29 @@ No build step. No frameworks. Just open `index.html`.
 
 ---
 
-## 👩‍💻 Parallel Development (Agents & Humans)
+## 👩‍💻 Development Workflow (Git Worktrees)
 
-If you are running multiple development sessions (or AI agents) simultaneously on this repository, you **must** use separate workspaces to avoid file and branch clashing.
+To maintain a clean main environment and allow for parallel agent execution, this repository follows a **Worktree-First** workflow.
 
-### Recommended: Git Worktrees
-Use [Git Worktrees](https://git-scm.com/docs/git-worktree) to check out separate branches in separate physical folders while sharing the same `.git` database:
+### 1. Start a New Feature
+Use [Git Worktrees](https://git-scm.com/docs/git-worktree) to check out a new branch in a separate folder:
 
 ```bash
-# Add a new workspace for a parallel task
-git worktree add ../feuliq-worker-1 feature/new-car-preset
+# Add a new workspace for your task
+git worktree add -b feature/my-new-task ../feuliq-task-1 main
 
-# When finished and merged
-git worktree remove ../feuliq-worker-1
+# Move into the task directory
+cd ../feuliq-task-1
 ```
 
-This prevents one session from overwriting the work of another or accidentally flip-flopping the local Git state.
+### 2. Develop & Commit
+Working in a separate physical folder prevents file overwrites and branch "flip-flopping" across multiple sessions.
+
+### 3. Cleanup
+Once your PR is merged, return to the main folder and remove the worktree:
+```bash
+git worktree remove ../feuliq-task-1
+```
 
 ---
 
