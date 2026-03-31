@@ -125,10 +125,21 @@ feuliq/
 
 ## 10. General Workflow for This Repo
 
-1. `git checkout -b <feature-branch>` from latest `main`
-2. Make changes
-3. Capture before/after screenshots (see #6 above)
+1. **Always use Git Worktrees** for new features: `git worktree add -b <branch> ../path main`
+2. Navigate to the new folder: `cd ../path`
+3. Make changes and capture before/after screenshots
 4. `git add . && git commit -m "feat|fix|chore|docs: description"`
 5. `git push origin <feature-branch>`
-6. `gh pr create --title "..." --body "...![Before](...) ![After](...)"`
-7. Never `git push origin main` — branch protection is active
+6. `gh pr create`
+7. After merging, return to main and remove the worktree: `git worktree remove ../path`
+
+---
+
+## 11. Avoiding Workspace Clashing
+
+### The Clashing Problem
+Concurrent agents "clashed" by overwriting files or flip-flopping the Git branch state of a single directory. The resolution was to mandate **Git Worktrees** for all feature work.
+
+**Risk:** High. Fixed by isolation.
+
+**Lesson:** Never work in the main workspace for a new feature. Always isolate parallel and sequential tasks into worktrees.

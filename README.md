@@ -86,6 +86,32 @@ No build step. No frameworks. Just open `index.html`.
 
 ---
 
+## 👩‍💻 Development Workflow (Git Worktrees)
+
+To maintain a clean main environment and allow for parallel agent execution, this repository follows a **Worktree-First** workflow.
+
+### 1. Start a New Feature
+Use [Git Worktrees](https://git-scm.com/docs/git-worktree) to check out a new branch in a separate folder:
+
+```bash
+# Add a new workspace for your task
+git worktree add -b feature/my-new-task ../feuliq-task-1 main
+
+# Move into the task directory
+cd ../feuliq-task-1
+```
+
+### 2. Develop & Commit
+Working in a separate physical folder prevents file overwrites and branch "flip-flopping" across multiple sessions.
+
+### 3. Cleanup
+Once your PR is merged, return to the main folder and remove the worktree:
+```bash
+git worktree remove ../feuliq-task-1
+```
+
+---
+
 ## 🧮 How It Works
 
 ### Fuel-Only Mode
