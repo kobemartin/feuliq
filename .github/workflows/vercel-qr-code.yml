@@ -1,0 +1,42 @@
+name: Vercel QR Code
+
+on:
+  deployment_status:
+
+jobs:
+  post-qr-code:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.creator.login == 'vercel[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Get PR Number
+        id: get_pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.payload.deployment.sha;
+            const prs = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: 'open',
+              head: `${owner}:${context.payload.deployment.ref}`
+            });
+            if (prs.data.length > 0) {
+              return prs.data[0].number;
+            }
+            return null;
+
+      - name: Post QR Code Comment
+        if: steps.get_pr.outputs.result != 'null'
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ steps.get_pr.outputs.result }}
+          body: |
+            ## 📱 Mobile Preview
+            Scan this QR code to test this deployment on your phone:
+            
+            ![QR Code](https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${{ github.event.deployment_status.target_url }})
+            
+            **Link:** [${{ github.event.deployment_status.target_url }}](${{ github.event.deployment_status.target_url }})
