@@ -18,6 +18,7 @@ const GAS_PRESETS = {
 const EV_PRESETS = {
   model3: { kwh: 0.24, purchase: 38990, maintenance: 400, incentive: 7500 },
   modely: { kwh: 0.28, purchase: 44990, maintenance: 450, incentive: 7500 },
+  bolt: { kwh: 0.29, purchase: 34095, maintenance: 400, incentive: 7500 },
   f150l: { kwh: 0.48, purchase: 49995, maintenance: 600, incentive: 7500 }
 };
 
@@ -89,22 +90,34 @@ let cumulativeChart = null;
 let breakdownChart = null;
 
 // ===== CORE CALCULATION =====
+function clampNumber(value, fallback, min, max) {
+  const n = Number.parseFloat(value);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
+function clampInt(value, fallback, min, max) {
+  const n = Number.parseInt(value, 10);
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, n));
+}
+
 function getInputs() {
-  const effValue = parseFloat($('ev-efficiency').value) || 3.3;
+  const effValue = clampNumber($('ev-efficiency').value, 3.3, 0.1, 100);
   const isMiKwh = $('ev-eff-unit').value === 'mi/kwh';
 
   return {
-    miles: parseFloat($('miles-per-year').value) || 12000,
-    years: parseInt($('years').value) || 5,
-    gasPrice: parseFloat($('gas-price').value) || 3.80,
-    mpg: parseFloat($('mpg').value) || 30,
-    gasMaintenance: parseFloat($('gas-maintenance').value) || 1200,
-    gasPurchase: parseFloat($('gas-purchase').value) || 28000,
-    electricRate: parseFloat($('electricity-rate').value) || 0.16,
+    miles: clampNumber($('miles-per-year').value, 12000, 1000, 100000),
+    years: clampInt($('years').value, 5, 1, 15),
+    gasPrice: clampNumber($('gas-price').value, 3.80, 1, 10),
+    mpg: clampNumber($('mpg').value, 30, 5, 80),
+    gasMaintenance: clampNumber($('gas-maintenance').value, 1200, 0, 10000),
+    gasPurchase: clampNumber($('gas-purchase').value, 28000, 5000, 200000),
+    electricRate: clampNumber($('electricity-rate').value, 0.16, 0.05, 0.60),
     kwhPerMile: isMiKwh ? (1 / effValue) : effValue,
-    evMaintenance: parseFloat($('ev-maintenance').value) || 500,
-    evPurchase: parseFloat($('ev-purchase').value) || 40000,
-    evIncentive: parseFloat($('ev-incentive').value) || 7500,
+    evMaintenance: clampNumber($('ev-maintenance').value, 500, 0, 10000),
+    evPurchase: clampNumber($('ev-purchase').value, 40000, 5000, 200000),
+    evIncentive: clampNumber($('ev-incentive').value, 7500, 0, 10000),
   };
 }
 
@@ -343,7 +356,7 @@ function renderBreakdownChart(gasFuel, gasMaint, evFuel, evMaint) {
   breakdownChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['⛽ Gas', '⚡ Electric'],
+      labels: [['⛽', 'Gas'], ['⚡', 'Electric']],
       datasets: [
         {
           label: 'Fuel Cost',
