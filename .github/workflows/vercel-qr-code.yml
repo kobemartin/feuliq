@@ -17,15 +17,18 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const sha = context.payload.deployment.sha;
-            const prs = await github.rest.pulls.list({
+
+            const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
               owner,
               repo,
-              state: 'open',
-              head: `${owner}:${context.payload.deployment.ref}`
+              commit_sha: sha
             });
-            if (prs.data.length > 0) {
-              return prs.data[0].number;
+
+            const openPr = prs.data.find((pr) => pr.state === 'open');
+            if (openPr) {
+              return openPr.number;
             }
+
             return null;
 
       - name: Post QR Code Comment
