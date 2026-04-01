@@ -10,7 +10,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="style.css" />
-  <script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+  <!-- Vercel Web Analytics -->
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <!-- Vercel Speed Insights -->
+  <script>
+    window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/speed-insights/script.js"></script>
 </head>
 <body>
   <!-- Background orbs -->
@@ -175,7 +185,7 @@
         <!-- TCO: Miles/Year -->
         <div class="ct-row tco-only hide">
           <div class="ct-label">Miles / Year</div>
-          <div class="ct-cell" colspan="2" style="grid-column: 2 / -1;">
+          <div class="ct-cell ct-full-span" colspan="2" style="grid-column: 2 / -1;">
             <div class="ct-input-wrap ct-span-input">
               <input id="miles-per-year" type="number" class="ct-input" value="12000" min="1000" max="100000" step="500" />
               <span class="ct-suffix">mi/yr</span>
@@ -186,7 +196,7 @@
         <!-- TCO: Ownership period -->
         <div class="ct-row tco-only hide">
           <div class="ct-label">Ownership</div>
-          <div class="ct-cell" colspan="2" style="grid-column: 2 / -1;">
+          <div class="ct-cell ct-full-span" colspan="2" style="grid-column: 2 / -1;">
             <div class="ct-input-wrap ct-span-input">
               <input id="years" type="number" class="ct-input" value="5" min="1" max="15" step="1" />
               <span class="ct-suffix">years</span>
