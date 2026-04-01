@@ -282,6 +282,13 @@ body {
 .ct-input::-webkit-outer-spin-button,
 .ct-input::-webkit-inner-spin-button { -webkit-appearance: none; }
 
+.ct-mobile-slider {
+  display: none;
+  width: 100%;
+  margin-top: 0.5rem;
+  accent-color: var(--purple);
+}
+
 /* Select dropdown */
 .ct-select-wrap { position: relative; }
 .ct-select-wrap::after {
@@ -643,9 +650,9 @@ td:first-child { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; 
   .ct-row {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.65rem;
-    padding: 0.9rem;
-    margin-bottom: 0.8rem;
+    gap: 0.55rem;
+    padding: 0.8rem;
+    margin-bottom: 0.65rem;
     border: 1px solid rgba(255,255,255,0.05);
     border-radius: var(--radius-md);
     background: rgba(255,255,255,0.02);
@@ -695,6 +702,10 @@ td:first-child { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; 
     max-width: none;
   }
 
+  .ct-mobile-slider {
+    display: block;
+  }
+
   .ct-divider {
     margin: 0.2rem 0 1rem;
     border-radius: var(--radius-md);
@@ -730,11 +741,11 @@ td:first-child { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; 
   }
 
   .chart-wrap {
-    height: 220px;
+    height: 200px;
   }
 
   .chart-wrap-bar {
-    height: 220px;
+    height: 200px;
   }
 
   table {
@@ -757,7 +768,7 @@ td:first-child { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; 
   }
 
   .ct-row {
-    padding: 0.8rem;
+    padding: 0.7rem;
   }
 
   .ct-prefix,

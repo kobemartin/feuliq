@@ -8,6 +8,13 @@ document.querySelectorAll('input[type="number"]').forEach(el => {
   el.addEventListener('input', calculate);
 });
 
+const MOBILE_SLIDER_LINKS = [
+  ['gas-price', 'gas-price-slider'],
+  ['electricity-rate', 'electricity-rate-slider'],
+  ['miles-per-year', 'miles-per-year-slider'],
+  ['years', 'years-slider']
+];
+
 // ===== PRESETS =====
 const GAS_PRESETS = {
   camry: { mpg: 32, purchase: 26420, maintenance: 800 },
@@ -237,6 +244,26 @@ function calculate() {
   renderBreakdownChart(annualGasFuel, v.gasMaintenance, annualEvFuel, v.evMaintenance);
 }
 
+function syncMobileSlider(inputId, sliderId) {
+  const input = $(inputId);
+  const slider = $(sliderId);
+  if (!input || !slider) return;
+
+  const syncFromInput = () => {
+    const n = parseFloat(input.value);
+    if (!Number.isNaN(n)) slider.value = n;
+  };
+
+  const syncFromSlider = () => {
+    input.value = slider.value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  };
+
+  input.addEventListener('input', syncFromInput);
+  slider.addEventListener('input', syncFromSlider);
+  syncFromInput();
+}
+
 // ===== CHART RENDERING =====
 function chartDefaults() {
   return {
@@ -386,5 +413,6 @@ function renderBreakdownChart(gasFuel, gasMaint, evFuel, evMaint) {
 // ===== INITIAL CALCULATION ON LOAD =====
 window.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('fuel-mode');
+  MOBILE_SLIDER_LINKS.forEach(([inputId, sliderId]) => syncMobileSlider(inputId, sliderId));
   calculate();
 });
