@@ -1,0 +1,24 @@
+{
+  "name": "feuliq",
+  "version": "1.0.0",
+  "description": "FuelIQ - Gas vs Electric Cost Calculator",
+  "main": "app.js",
+  "scripts": {
+    "dev": "npx serve .",
+    "test": "echo \"No tests specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kobemartin/feuliq.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kobemartin/feuliq/issues"
+  },
+  "homepage": "https://github.com/kobemartin/feuliq#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}

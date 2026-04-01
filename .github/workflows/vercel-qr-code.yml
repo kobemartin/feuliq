@@ -17,18 +17,26 @@ jobs:
           script: |
             const { owner, repo } = context.repo;
             const sha = context.payload.deployment.sha;
-
             const prs = await github.rest.repos.listPullRequestsAssociatedWithCommit({
               owner,
               repo,
               commit_sha: sha
             });
 
-            const openPr = prs.data.find((pr) => pr.state === 'open');
-            if (openPr) {
-              return openPr.number;
+            const openPrs = prs.data.filter((pr) => pr.state === 'open');
+            const deploymentRef = context.payload.deployment.ref;
+            
+            // Match the PR's head ref to the deployment ref to handle stacked PRs properly
+            let targetPr = openPrs.find((pr) => pr.head.ref === deploymentRef);
+            
+            // Fallback to first open PR only if the deployment ref is the SHA itself rather than a branch name
+            if (!targetPr && deploymentRef === sha && openPrs.length > 0) {
+              targetPr = openPrs[0];
             }
 
+            if (targetPr) {
+              return targetPr.number;
+            }
             return null;
 
       - name: Post QR Code Comment
