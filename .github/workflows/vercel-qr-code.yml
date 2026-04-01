@@ -5,7 +5,7 @@ on:
 
 jobs:
   post-qr-code:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.creator.login == 'vercel[bot]'
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.creator.login == 'vercel[bot]' && github.event.deployment.environment == 'Preview'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -48,6 +48,6 @@ jobs:
             ## 📱 Mobile Preview
             Scan this QR code to test this deployment on your phone:
             
-            ![QR Code](https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${{ github.event.deployment_status.target_url }})
+            ![QR Code](https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url }})
             
-            **Link:** [${{ github.event.deployment_status.target_url }}](${{ github.event.deployment_status.target_url }})
+            **Link:** [${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url }}](${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url }})
