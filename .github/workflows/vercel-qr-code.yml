@@ -5,7 +5,7 @@ on:
 
 jobs:
   post-qr-code:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.creator.login == 'vercel[bot]'
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.creator.login == 'vercel[bot]' && github.event.deployment.environment == 'Preview'
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -39,15 +39,40 @@ jobs:
             }
             return null;
 
-      - name: Post QR Code Comment
+      - name: Resolve Preview URLs
         if: steps.get_pr.outputs.result != 'null'
+        id: preview_urls
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const withProtocol = (url) => {
+              if (!url) return null;
+              return url.startsWith('http') ? url : `https://${url}`;
+            };
+
+            const envUrl = withProtocol(context.payload.deployment_status.environment_url);
+            const targetUrl = withProtocol(context.payload.deployment_status.target_url);
+
+            const isBranchAlias = (url) => typeof url === 'string' && url.includes('-git-');
+            const stableUrl = [envUrl, targetUrl].find(isBranchAlias) || envUrl || targetUrl;
+            const snapshotUrl = [envUrl, targetUrl].find((url) => url && url !== stableUrl) || null;
+
+            core.setOutput('stable_url', stableUrl);
+            core.setOutput('snapshot_url', snapshotUrl || '');
+
+      - name: Post QR Code Comment
+        if: steps.get_pr.outputs.result != 'null' && steps.preview_urls.outputs.stable_url != ''
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ steps.get_pr.outputs.result }}
+          edit-mode: replace
+          body-includes: "<!-- mobile-preview-comment -->"
           body: |
+            <!-- mobile-preview-comment -->
             ## 📱 Mobile Preview
             Scan this QR code to test this deployment on your phone:
             
-            ![QR Code](https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${{ github.event.deployment_status.target_url }})
+            ![QR Code](https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${{ steps.preview_urls.outputs.stable_url }})
             
-            **Link:** [${{ github.event.deployment_status.target_url }}](${{ github.event.deployment_status.target_url }})
+            **Stable Preview Link:** [${{ steps.preview_urls.outputs.stable_url }}](${{ steps.preview_urls.outputs.stable_url }})
+            ${{ steps.preview_urls.outputs.snapshot_url != '' && format('**Snapshot Link (exact deployment):** [{0}]({0})', steps.preview_urls.outputs.snapshot_url) || '' }}
